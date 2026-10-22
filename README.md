@@ -50,7 +50,7 @@ with the Swift toolchain that ships with macOS.
 
 ## Requirements
 
-- macOS 14+
+- macOS 26.4+ (matching the Splash engine)
 - [Splash](https://github.com/incoai/splash) installed and running as the
   launchd agent `local.llm.splash` with the chat page on port 8080 — or pick
   one of the stable GitHub releases in the version menu; SplashBar then
@@ -65,7 +65,10 @@ bash build.sh            # builds /Applications/SplashBar.app + launch agent, st
 ```
 
 The build script also (re)registers the `local.splashbar` LaunchAgent so
-SplashBar auto-starts at login.
+SplashBar auto-starts at login, and keeps the splash agent's `RunAtLoad`
+in sync with the app's **Launch at login** setting — with it off, the splash
+executable no longer starts at login on its own; the menubar app remains the
+only controller of the splash executable.
 
 ### Configuration
 
@@ -77,6 +80,7 @@ covers where each one applies and how "Save" propagates to the LaunchAgent.
 
 | Setting | Default |
 |---------|---------|
+| Launch at login | Matches what is on disk — also gates the splash executable's auto-start at login |
 | Server URL (chat and API health check) | `http://127.0.0.1:8080` |
 | Splash LaunchAgent label | `local.llm.splash` |
 | Splash LaunchAgent plist | `~/Library/LaunchAgents/local.llm.splash.plist` |
